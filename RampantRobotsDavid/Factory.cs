@@ -9,6 +9,7 @@ namespace RampantRobotsDavid
         public int fheight;
         public int fturns;
         public bool frobotsMove;
+        int turnCounter;
         public List<Robot> allRobots = new List<Robot>();
         public Mechanic Mech = new Mechanic();
 
@@ -86,23 +87,21 @@ namespace RampantRobotsDavid
             if (allRobots.Count > 0)
             {
                 Console.Write("\nWhat moves should the mechanic make? (use wasd keys)\n");
+                Console.Write(string.Format("\nYou have {0} turns left\n", fturns - turnCounter));
             }
 
         }
 
         public void Run()
         {
-            int turnCounter = 0;
-            while (allRobots.Count > 0)
+            turnCounter = 0;
+            while (allRobots.Count > 0 && turnCounter < fturns)
             {
                 Mech.walk(fwidth,fheight);
 
                 // Stop het spel als de beurten om zijn
                 turnCounter = turnCounter + 1;
-                if (turnCounter == fturns)
-                {
-                    break;
-                }
+
                 // als de speler het wil, laat dan alle robots lopen en verplaats ze als ze op elkaar eindigen
                 if (frobotsMove == true)
                 {
@@ -147,16 +146,19 @@ namespace RampantRobotsDavid
                     n = n + 1;
                 }
                 draw(allRobots, Mech);
+
             }
 
             // Meld de speler of zij gewonnen of verloren heeft
             if (allRobots.Count == 0)
             {
                 Console.Write("Well done! You oiled all the robots!");
+                Console.Read();
             }
             else
             {
                 Console.Write("You ran out of oil before oiling all the robots, how sad");
+                Console.Read();
             }
         }
     }
